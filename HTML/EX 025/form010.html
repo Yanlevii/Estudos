@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Formulário</title>
+    <style>
+        /* Estilo geral */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Caixa do formulário */
+        .container {
+            background: white;
+            padding: 20px 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        output {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 5px;
+        }
+
+        input[type="reset"] {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        input[type="reset"]:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Calculadora de idade basica</h1>
+        <form action="cadastro.php" method="get" autocomplete="on">
+            <label for="iano">Em que ano você nasceu?</label>
+            <input type="number" name="ano" id="iano" min="1900" max="2025" oninput="calcIdade()">
+
+            <label for="iidade">Sua idade é:</label>
+            <output id="iidade">0</output>
+
+            <input type="reset" value="Limpar">
+        </form>
+    </div>
+
+    <script>
+        function calcIdade() {
+            let atual = new Date().getFullYear();
+            let anoNascimento = document.getElementById("iano").value;
+            let idade = atual - Number(anoNascimento);
+            
+            document.getElementById("iidade").innerHTML = isNaN(idade) ? "0" : idade;
+        }
+    </script>
+    
+</body>
+</html>
