@@ -72,26 +72,61 @@
 <body>
 
     <div class="container">
-        <h1>Calculadora de idade basica</h1>
+        <h1>Calculadora de idade</h1>
         <form action="cadastro.php" method="get" autocomplete="on">
-            <label for="iano">Em que ano você nasceu?</label>
+            <label for="idia">Dia no nascimento</label>
+            <input type="number" name="dia" id="idia" min="0" max="31" oninput="calcIdade()">
+
+            <label for="imes">Mês do nascimento</label>
+            <input type="number" name="mes" id="imes" min="0" max="12" oninput="calcIdade()">
+
+            <label for="iano">Ano do nascimento</label>
             <input type="number" name="ano" id="iano" min="1900" max="2025" oninput="calcIdade()">
 
             <label for="iidade">Sua idade é:</label>
             <output id="iidade">0</output>
 
-            <input type="reset" value="Limpar">
+            <input type="reset" value="Limpar" onclick ="resetar()">
         </form>
     </div>
 
     <script>
         function calcIdade() {
-            let atual = new Date().getFullYear();
-            let anoNascimento = document.getElementById("iano").value;
-            let idade = atual - Number(anoNascimento);
+        let atual = new Date(); 
+        let anoAtual = atual.getFullYear();
+        let mesAtual = atual.getMonth() + 1; // getMonth() retorna de 0 a 11, então somamos 1
+        let diaAtual = atual.getDate();
+
+        let anoNascimento = Number(document.getElementById("iano").value);
+        let mesNascimento = Number(document.getElementById("imes").value);
+        let diaNascimento = Number(document.getElementById("idia").value);
+
+        // Se algum campo estiver vazio, não faz nada
+        if (anoNascimento < 0) document.getElementById("iano").value = 1900;
+        if (anoNascimento > 2025) document.getElementById("iano").value = 2025;
+        if (mesNascimento < 0) document.getElementById("imes").value = 0;
+        if (mesNascimento > 12) document.getElementById("imes").value = 12;
+        if (diaNascimento < 0) document.getElementById("idia").value = 0;
+        if (diaNascimento > 31) document.getElementById("idia").value = 31;
+
             
-            document.getElementById("iidade").innerHTML = isNaN(idade) ? "0" : idade;
-        }
+        if (!anoNascimento || !mesNascimento || !diaNascimento) {
+        document.getElementById("iidade").innerHTML = "0";
+        return;
+        
+    }
+    
+
+        let idade = anoAtual - anoNascimento;
+
+        // Se o usuário ainda não fez aniversário este ano, diminui a idade
+        if (mesNascimento > mesAtual || (mesNascimento === mesAtual && diaNascimento > diaAtual)) {
+        idade--;
+    }
+
+        document.getElementById("iidade").innerHTML = idade;
+}
+
     </script>
     
 </body>
