@@ -3,24 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu primeiro formulario</title>
+    <title>Calculadora de idade</title>
     <style>
-        h1{
-            user-select: none;
+        /* Estilo geral */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        label{
-            user-select: none;
+
+        /* Caixa do formulário */
+        .container {
+            background: white;
+            padding: 20px 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        output {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 5px;
+        }
+
+        input[type="reset"] {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        input[type="reset"]:hover {
+            background: #cc0000;
         }
     </style>
 </head>
 <body>
-    <h1>Meu primeiro formulario</h1>
-    <form action="cadastro.php" method="post" autocomplete="off">
-        <p><label for="inome">Nome:</label>
-        <input type="text" name="Nome" id="inome"></p>
-        <p><label for="isobrenome">Sobrenome:</label> 
-        <input type="text" name="Sobrenome" id="isobrenome"></p>
-        <input type="submit" value="Enviar">
-    </form>
+
+    <div class="container">
+        <h1>Calculadora de idade</h1>
+        <form action="cadastro.php" method="get" autocomplete="on">
+            <label for="idia">Dia no nascimento</label>
+            <input type="number" name="dia" id="idia" min="0" max="31" oninput="calcIdade()">
+
+            <label for="imes">Mês do nascimento</label>
+            <input type="number" name="mes" id="imes" min="0" max="12" oninput="calcIdade()">
+
+            <label for="iano">Ano do nascimento</label>
+            <input type="number" name="ano" id="iano" min="1900" max="2025" oninput="calcIdade()">
+
+            <label for="iidade">Sua idade é:</label>
+            <output id="iidade">0</output>
+
+            <input type="reset" value="Limpar" onclick ="resetar()">
+        </form>
+    </div>
+
+    <script>
+        function calcIdade() {
+        let atual = new Date(); 
+        let anoAtual = atual.getFullYear();
+        let mesAtual = atual.getMonth() + 1; // getMonth() retorna de 0 a 11, então somamos 1
+        let diaAtual = atual.getDate();
+
+        let anoNascimento = Number(document.getElementById("iano").value);
+        let mesNascimento = Number(document.getElementById("imes").value);
+        let diaNascimento = Number(document.getElementById("idia").value);
+
+        // Se algum campo estiver vazio, não faz nada
+        if (anoNascimento < 0) document.getElementById("iano").value = 1900;
+        if (anoNascimento > 2025) document.getElementById("iano").value = 2025;
+        if (mesNascimento < 0) document.getElementById("imes").value = 0;
+        if (mesNascimento > 12) document.getElementById("imes").value = 12;
+        if (diaNascimento < 0) document.getElementById("idia").value = 0;
+        if (diaNascimento > 31) document.getElementById("idia").value = 31;
+
+            
+        if (!anoNascimento || !mesNascimento || !diaNascimento) {
+        document.getElementById("iidade").innerHTML = "0";
+        return;
+        
+    }
+    
+        let idade = anoAtual - anoNascimento;
+
+        // Se o usuário ainda não fez aniversário este ano, diminui a idade
+        if (mesNascimento > mesAtual || (mesNascimento === mesAtual && diaNascimento > diaAtual)) {
+        idade--;
+    }
+
+        document.getElementById("iidade").innerHTML = idade;
+}
+
+    </script>
+    
 </body>
 </html>
